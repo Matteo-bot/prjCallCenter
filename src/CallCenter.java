@@ -3,18 +3,35 @@ public class CallCenter {
     private QueueArray<Call> waitingList;
     ListArray<Operator> operators;
 
-    CallCenter(int sizeOp, int sizeWl){
-        this.waitingList = new QueueArray<>(sizeWl);
-        this.operators = new ListArray<>(sizeOp);
-    }
+    CallCenter(ListArray<Operator> operators, int sizeCall) {
+       this.waitingList = new QueueArray<Call>(sizeCall);
+       this.operators = operators;
+   }
 
-    public void calls(Call call){
-        //...
-    }
 
-    public String show(){
-        //...
-        return "";
-    }
+    void calls(Call temp) {
+           boolean bool = false;
+
+
+           for (int i = 0; i < operators.count(); i++) {
+               if (!bool && operators.readElement(i).getAveilable()) {
+                   operators.readElement(i).addCall(temp);
+                   operators.readElement(i).setAveilable(false);
+                   bool = true;
+               }
+           }
+           if (!bool) {
+               waitingList.enqueue(temp);
+           }
+       }
+
+
+    public String toString() {
+       String str = " ";
+       str += "Opeatori: " + operators.toString();
+       str += "\n Waiting List: " + waitingList.toString();
+       return str;
+   }
+
 
 }
